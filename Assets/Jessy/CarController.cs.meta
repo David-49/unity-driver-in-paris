@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 9520b82ddee824ef0808728b57264280
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - CarBody: {fileID: 100028, guid: c5c80a52ec520a949aba075f46688c6a, type: 3}
+  - Wheel1: {instanceID: 0}
+  - Wheel2: {instanceID: 0}
+  - Wheel3: {instanceID: 0}
+  - Wheel4: {instanceID: 0}
+  - Right: {instanceID: 0}
+  - Left: {instanceID: 0}
+  - Straight: {instanceID: 0}
+  - Trail1: {instanceID: 0}
+  - Trail2: {instanceID: 0}
+  - Trail3: {instanceID: 0}
+  - Trail4: {instanceID: 0}
+  - CarEngine: {instanceID: 0}
+  - CarDrift: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
