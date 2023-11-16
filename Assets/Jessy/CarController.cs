@@ -22,29 +22,31 @@ public class CarController : MonoBehaviour
     public TrailRenderer Trail4;
     public float speedForward = 150;
     public float speedReverse = 80;
-    public float rotationSpeed = 120;
+
 
     public AudioSource CarEngine;
     public AudioSource CarDrift;
     public bool DriftCheck;
     private bool hasStartedMoving = false;
 
+
     private void Start()
     {
         RB = gameObject.GetComponent<Rigidbody>();
-        RB.useGravity = true; // Add this line to enable gravity
-        RB.angularDrag = 5f; // Added angular drag for smoother rotation
+            RB.useGravity = true; // Add this line to enable gravity
+
     }
 
     private void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        if (verticalInput > 0)
+        if (Input.GetKey("w"))
         {
-            RB.AddForce(transform.forward * speedForward * verticalInput);
-            UpdateWheelsRotation(horizontalInput);
+            RB.velocity -= transform.forward * speedForward * Time.deltaTime;
+
+            Wheel1.Rotate(-500 , 0, 0 * Time.deltaTime);
+            Wheel2.Rotate(-500 , 0, 0 * Time.deltaTime);
+            Wheel3.Rotate(500 , 0, 0  * Time.deltaTime);
+            Wheel4.Rotate(500 , 0, 0  * Time.deltaTime);
 
             if (!hasStartedMoving)
             {
@@ -53,48 +55,71 @@ public class CarController : MonoBehaviour
                 hasStartedMoving = true;
             }
         }
-        else if (verticalInput < 0)
-        {
-            RB.AddForce(transform.forward * speedReverse * verticalInput);
-            UpdateWheelsRotation(-horizontalInput); // Reverse wheel rotation for reverse movement
-        }
         else
         {
             CarEngine.Stop();
+        }
+        if (!Input.GetKey("w"))
+        {
             hasStartedMoving = false; // Reset the flag when the car stops moving
         }
 
-        float rotationAmount = horizontalInput * rotationSpeed * Time.deltaTime;
-        transform.Rotate(0, rotationAmount, 0);
-
-        if (!Input.GetKey("d") && !Input.GetKey("a") && !Input.GetKey("w") && !Input.GetKey("s"))
+        if (Input.GetKey("s"))
         {
-            RB.velocity *= 0.95f; // Damping to slow down when not pressing any keys
+            RB.velocity += transform.forward * speedReverse * Time.deltaTime;
+
+            Wheel1.Rotate(500 ,0, 0 * Time.deltaTime);
+            Wheel2.Rotate(500 ,0, 0 * Time.deltaTime);
+            Wheel3.Rotate(-500 ,0, 0 * Time.deltaTime);
+            Wheel4.Rotate(-500 ,0, 0 * Time.deltaTime);
         }
 
-        UpdateTrailEmittance();
-    }
+        if(Input.GetKey("a") && Input.GetKey("w"))
+        {
+            transform.Rotate(0, -30 * Time.deltaTime, 0);
+            
+            CarBody.transform.rotation = Quaternion.Lerp(CarBody.transform.rotation, Left.rotation, 4 * Time.deltaTime);
+            Wheel1.transform.rotation = Quaternion.Lerp(Wheel1.transform.rotation, Right.rotation, 4 * Time.deltaTime);
+            Wheel3.transform.rotation = Quaternion.Lerp(Wheel3.transform.rotation, Right.rotation, 4 * Time.deltaTime);
+            RB.velocity += CarBody.transform.forward * 120 * Time.deltaTime;
+            RB.velocity -= transform.forward * 110 * Time.deltaTime;
+            // Limit upward velocity
+            if (RB.velocity.y > 0)
+            {
+                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+            }
+        }
 
-    private void UpdateWheelsRotation(float rotationAmount)
-    {
-        Wheel1.localRotation = Quaternion.Euler(-500 * rotationAmount, 0, 0);
-        Wheel2.localRotation = Quaternion.Euler(-500 * rotationAmount, 0, 0);
-        Wheel3.localRotation = Quaternion.Euler(500 * rotationAmount, 0, 0);
-        Wheel4.localRotation = Quaternion.Euler(500 * rotationAmount, 0, 0);
-    }
+        if(Input.GetKey("d") && Input.GetKey("w"))
+        {
+            transform.Rotate(0, 30 * Time.deltaTime, 0);
+            CarBody.transform.rotation = Quaternion.Lerp(CarBody.transform.rotation, Right.rotation, 4 * Time.deltaTime);
+            Wheel1.transform.rotation = Quaternion.Lerp(Wheel1.transform.rotation, Right.rotation, 4 * Time.deltaTime);
+            Wheel3.transform.rotation = Quaternion.Lerp(Wheel3.transform.rotation, Right.rotation, 4 * Time.deltaTime);
+            RB.velocity += CarBody.transform.forward * 120 * Time.deltaTime;
+            RB.velocity -= transform.forward * 110 * Time.deltaTime;
+            // Limit upward velocity
+            if (RB.velocity.y > 0)
+            {
+                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+            }
+        }
 
-    private void UpdateTrailEmittance()
-    {
-        float rotationY = CarBody.transform.localRotation.eulerAngles.y;
+        if(!Input.GetKey("d") && !Input.GetKey("a"))
+        {
+            CarBody.transform.rotation = Quaternion.Lerp(CarBody.transform.rotation, Straight.rotation, 4 * Time.deltaTime);
+            Wheel1.transform.rotation = Quaternion.Lerp(Wheel1.transform.rotation, Straight.rotation, 4 * Time.deltaTime);
+            Wheel3.transform.rotation = Quaternion.Lerp(Wheel3.transform.rotation, Straight.rotation, 4 * Time.deltaTime);
+        }
 
-        if (Mathf.Abs(rotationY) > 15 && Mathf.Abs(rotationY) < 345)
+        if(CarBody.transform.localRotation.y * 100 > 15 || CarBody.transform.localRotation.y * 100 < -15)
         {
             Trail1.emitting = true;
             Trail2.emitting = true;
             Trail3.emitting = true;
             Trail4.emitting = true;
 
-            if (!DriftCheck)
+            if(DriftCheck == false)
             {
                 DriftCheck = true;
                 CarDrift.Play();
