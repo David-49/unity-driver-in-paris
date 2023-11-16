@@ -88,9 +88,6 @@ public class CarController : MonoBehaviour
             {
                 RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
             }
-            // Set the local rotation of Wheel1 and Wheel3
-            // Wheel1.localRotation = Quaternion.Euler(0, -400, 0);
-            // Wheel3.localRotation = Quaternion.Euler(0, -400, 0);
         }
 
         if(Input.GetKey("d") && Input.GetKey("w"))
@@ -106,8 +103,6 @@ public class CarController : MonoBehaviour
             {
                 RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
             }
-            // Wheel1.localRotation = Quaternion.Euler(0, 400, 0);
-            // Wheel3.localRotation = Quaternion.Euler(0, 400, 0);
         }
 
         if(!Input.GetKey("d") && !Input.GetKey("a"))
