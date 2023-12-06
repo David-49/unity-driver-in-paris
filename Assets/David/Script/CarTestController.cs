@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CarController : MonoBehaviour
+public class CarTestController : MonoBehaviour
 {
     public float moveSpeed = 5.0f; // Vitesse de déplacement du cube
 

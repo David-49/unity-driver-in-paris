@@ -19,7 +19,6 @@ public class Car : MonoBehaviour
 
     IEnumerator LoseHealthOverTime()
     {
-        Debug.Log(shouldTakeDamages);
         while (shouldTakeDamages)
         {
             if (currentHealth <= 0)
