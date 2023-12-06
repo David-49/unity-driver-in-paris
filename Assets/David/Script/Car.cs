@@ -7,7 +7,8 @@ public class Car : MonoBehaviour
     public int currentHealth;
     public HealthBar healthBar;
     public GameObject explosionPrefab;
-    private Coroutine loseHealthCoroutine; 
+    private Coroutine loseHealthCoroutine;
+    private bool shouldTakeDamages = true;
 
     void Start()
     {
@@ -18,19 +19,26 @@ public class Car : MonoBehaviour
 
     IEnumerator LoseHealthOverTime()
     {
-        while (true) // Changez ici pour une boucle infinie
+        Debug.Log(shouldTakeDamages);
+        while (shouldTakeDamages)
         {
             if (currentHealth <= 0)
             {
                 TriggerExplosion();
-                yield return new WaitForSeconds(2); // Petite pause avant de recommencer
+                yield return new WaitForSeconds(1);
                 ResetToSavedPoint();
-                continue; // Continue la boucle
+                continue;
             }
 
             yield return new WaitForSeconds(1);
             TakeDamage(1);
         }
+    }
+
+    public void StopTakingDamages()
+    {
+        shouldTakeDamages = false;
+        StopCoroutine(LoseHealthOverTime());
     }
 
     void TakeDamage(int damage)

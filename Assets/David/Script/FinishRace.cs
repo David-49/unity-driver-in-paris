@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Checkpoint : MonoBehaviour
+public class FinishRace : MonoBehaviour
 {
     private CheckpointManager manager;
 
@@ -8,19 +10,14 @@ public class Checkpoint : MonoBehaviour
     {
         manager = FindObjectOfType<CheckpointManager>();
     }
-
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.CompareTag("Car"))
         {
             Car playerCar = collider.gameObject.GetComponent<Car>();
-            if (playerCar != null)
+            if (playerCar != null && manager.allCheckpointChecked)
             {
-                if (GetComponent<Renderer>().material.color == manager.nextCheckpointColor)
-                {
-                    playerCar.ResetHealth();
-                    manager.ActivateNextCheckpoint();
-                }
+                playerCar.StopTakingDamages();
             }
         }
     }

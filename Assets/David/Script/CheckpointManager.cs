@@ -5,9 +5,10 @@ public class CheckpointManager : MonoBehaviour
     public GameObject[] checkpoints;
     private int currentCheckpointIndex = -1;
     public Transform startPoint;
-    public Color inactiveColor = Color.grey;
-    public Color activeColor = Color.yellow;
-    public Color nextCheckpointColor = Color.green; // Nouvelle couleur pour le prochain checkpoint
+    public Color inactiveColor;
+    public Color activeColor;
+    public Color nextCheckpointColor;
+    public bool allCheckpointChecked = false;
 
     void Start()
     {
@@ -16,34 +17,28 @@ public class CheckpointManager : MonoBehaviour
             checkpoint.GetComponent<Renderer>().material.color = inactiveColor;
         }
 
-        // Initialise le premier checkpoint avec la couleur "prochain checkpoint"
         if (checkpoints.Length > 0)
         {
-            Debug.Log("COULEUR " + checkpoints[0].GetComponent<Renderer>().material.color);
-            Debug.Log("ACTIVE COLOR " + activeColor);
-            checkpoints[0].GetComponent<Renderer>().material.color = activeColor;
-            Debug.Log("AFTER " + checkpoints[0].GetComponent<Renderer>().material.color);
+            checkpoints[0].GetComponent<Renderer>().material.color = nextCheckpointColor;
         }
     }
 
     public void ActivateNextCheckpoint()
     {
-        checkpoints[0].GetComponent<Renderer>().material.color = activeColor;
-        // if (currentCheckpointIndex >= 0 
-        // && currentCheckpointIndex < checkpoints.Length 
-        // && checkpoints[currentCheckpointIndex].GetComponent<Renderer>().material.color == nextCheckpointColor
-        // )
-        // {
-        //     checkpoints[currentCheckpointIndex].GetComponent<Renderer>().material.color = activeColor;
-        // }
+        currentCheckpointIndex++;
 
-        // currentCheckpointIndex++;
+        if (currentCheckpointIndex >= 0 && currentCheckpointIndex < checkpoints.Length)
+        {
+            checkpoints[currentCheckpointIndex].GetComponent<Renderer>().material.color = activeColor;
+        }
 
-        // // Change la couleur du prochain checkpoint pour l'indiquer comme le prochain objectif
-        // if (currentCheckpointIndex < checkpoints.Length)
-        // {
-        //     checkpoints[currentCheckpointIndex].GetComponent<Renderer>().material.color = nextCheckpointColor;
-        // }
+        if (currentCheckpointIndex + 1 < checkpoints.Length)
+        {
+            checkpoints[currentCheckpointIndex + 1].GetComponent<Renderer>().material.color = nextCheckpointColor;
+        } else
+        {
+            allCheckpointChecked = true;
+        }
     }
 
     public Transform GetActiveCheckpoint()
