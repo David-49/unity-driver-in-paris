@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "parisDriver.sln"
+    "dotnet.defaultSolution": "unity-driver-in-paris.sln"
 }
