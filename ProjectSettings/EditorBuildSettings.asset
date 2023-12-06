@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/David/Scenes/Menu.unity
     guid: 8971bd398d85f4db98691f83c7be7bf2
-  - enabled: 0
-    path: Assets/David/Scenes/parisDriver.unity
-    guid: 37dd4a0642e2a4db19d4c7a2a54df81d
   - enabled: 1
     path: Assets/Alexis/Scenes/DriverScene.unity
     guid: cf09cd9a238df594484ff282e271a814
